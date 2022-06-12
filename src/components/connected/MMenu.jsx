@@ -66,7 +66,7 @@ function MMenu({ anchorEl, handleClose }) {
 }
 
 MMenu.propTypes = {
-  anchorEl: PropTypes.element.isRequired,
+  anchorEl: PropTypes.object,
   handleClose: PropTypes.func.isRequired,
 };
 

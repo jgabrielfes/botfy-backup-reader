@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -7,14 +8,14 @@ import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 
 import MMenu from './MMenu';
 
 import ChatList from './ChatList';
 
-function MDrawer() {
+function MDrawer({ open, handleClose }) {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [search, setSearch] = useState('');
   const mobile = useMediaQuery('(max-width: 899px)');
@@ -22,7 +23,8 @@ function MDrawer() {
   return (
     <Drawer
       variant={mobile ? 'temporary' : 'permanent'}
-      open
+      open={open}
+      onClose={handleClose}
       BackdropProps={{ sx: { backdropFilter: 'blur(10px)' } }}
       PaperProps={{
         sx: {
@@ -42,11 +44,10 @@ function MDrawer() {
         }}
       >
         <IconButton
-          color="secondary"
           sx={{ mr: 1 }}
           onClick={({ target }) => setMenuAnchorEl(target)}
         >
-          <MenuIcon />
+          <SettingsIcon />
         </IconButton>
 
         <MMenu
@@ -69,7 +70,7 @@ function MDrawer() {
               </InputAdornment>
             ),
             endAdornment: search && (
-              <InputAdornment>
+              <InputAdornment position="end">
                 <IconButton edge="end" color="secondary" onClick={() => setSearch('')}>
                   <CloseIcon />
                 </IconButton>
@@ -78,9 +79,14 @@ function MDrawer() {
           }}
         />
       </Toolbar>
-      <ChatList />
+      <ChatList handleClose={handleClose} />
     </Drawer>
   );
 }
+
+MDrawer.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default MDrawer;

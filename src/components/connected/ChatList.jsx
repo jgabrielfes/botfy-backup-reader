@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
@@ -11,9 +12,14 @@ import Typography from '@mui/material/Typography';
 import { getLastMessage } from '../../services/chat';
 import { setCurrentChat } from '../../redux/reducers/configs';
 
-function ChatList() {
+function ChatList({ handleClose }) {
   const dispatch = useDispatch();
   const { chats, currentChat } = useSelector(state => state.configs);
+
+  const handleChat = useCallback(protocolo => {
+    handleClose();
+    dispatch(setCurrentChat(protocolo));
+  }, [dispatch, handleClose]);
 
   return (
     <List>
@@ -33,7 +39,7 @@ function ChatList() {
             },
           }}
         >
-          <ListItemButton onClick={() => dispatch(setCurrentChat(chat.protocolo))}>
+          <ListItemButton onClick={() => handleChat(chat.protocolo)}>
             <Typography
               color={chat.protocolo === currentChat ? 'inherit' : 'text.secondary'}
               variant="caption"
@@ -64,5 +70,9 @@ function ChatList() {
     </List>
   );
 }
+
+ChatList.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default ChatList;
