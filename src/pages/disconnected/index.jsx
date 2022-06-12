@@ -74,6 +74,7 @@ function Disconnected() {
             bgcolor: ({ palette }) => `${palette.background.paper}da`,
             borderRadius: { xs: 10, sm: '0 40px 4px 0' },
             p: { xs: 4, sm: 3 },
+            position: 'relative',
           }}
         >
           <Typography variant="h4" mr={4}>Bem-vindo!</Typography>
