@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -19,6 +19,10 @@ function MDrawer({ open, handleClose }) {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [search, setSearch] = useState('');
   const mobile = useMediaQuery('(max-width: 899px)');
+
+  useEffect(() => {
+    setMenuAnchorEl(null);
+  }, [mobile])
 
   return (
     <Drawer
