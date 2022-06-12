@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -8,11 +8,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Connected from './pages/connected';
 import Disconnected from './pages/disconnected';
+import LoadingPage from './pages/LoadingPage';
 
 const themes = {
   light: createTheme({
     palette: {
-      background: { default: '#eeeeee', paper: '#ffffff' },
+      background: { default: '#eeeeee', paper: '#eeeeee' },
       mode: 'light',
       primary: { main: '#8c59fe' },
       secondary: { main: '#8c59fe' },
@@ -29,7 +30,12 @@ const themes = {
 };
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const { theme } = useSelector(state => state.configs);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, [])
 
   return (
     <ThemeProvider theme={themes[theme]}>
@@ -39,10 +45,12 @@ function App() {
         preventDuplicate
       >
         <CssBaseline enableColorScheme />
-        <Switch>
-          <Route path="/login" component={Disconnected} />
-          <Route path="/" component={Connected} />
-        </Switch>
+        {loading ? <LoadingPage /> : (
+          <Switch>
+            <Route path="/login" component={Disconnected} />
+            <Route path="/" component={Connected} />
+          </Switch>
+        )}
       </SnackbarProvider>
     </ThemeProvider >
   );

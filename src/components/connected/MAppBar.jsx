@@ -4,8 +4,8 @@ import Toolbar from '@mui/material/Toolbar';
 
 function MAppBar() {
   return (
-    <AppBar enableColorOnDark sx={{ left: { xs: 0, md: 280 } }}>
-      <Toolbar variant="dense">
+    <AppBar enableColorOnDark sx={{ left: { xs: 0, md: 360 } }}>
+      <Toolbar variant="dense" sx={{ height: 56 }}>
         Teste
       </Toolbar>
     </AppBar>
