@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SnackbarProvider } from 'notistack';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,6 +9,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Connected from './pages/connected';
 import Disconnected from './pages/disconnected';
 import LoadingPage from './pages/LoadingPage';
+
+import { setLoading } from './redux/reducers/configs';
 
 const themes = {
   light: createTheme({
@@ -30,11 +32,11 @@ const themes = {
 };
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const { theme } = useSelector(state => state.configs);
+  const dispatch = useDispatch();
+  const { theme, loading } = useSelector(state => state.configs);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
+    setTimeout(() => dispatch(setLoading(false)), 1000);
   }, [])
 
   return (

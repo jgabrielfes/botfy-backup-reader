@@ -18,6 +18,7 @@ function LoadingPage() {
       />
       <CircularProgress
         color="secondary"
+        disableShrink
         size={110}
         sx={{
           left: 'calc(50% - 55px)',

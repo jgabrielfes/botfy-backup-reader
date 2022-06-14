@@ -2,8 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const INITIAL_STATE = {
   theme: localStorage.theme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light'),
-  chats: localStorage.chats ? JSON.parse(localStorage.chats) : [],
-  currentChat: '',
+  loading: true,
+  currentChat: null,
+  fullContent: [],
+  visibleContent: [],
 };
 
 const configs = createSlice({
@@ -14,14 +16,16 @@ const configs = createSlice({
       localStorage.theme = state.theme === 'light' ? 'dark' : 'light';
       state.theme = localStorage.theme;
     },
-    setChat: (state, { payload }) => {
-      localStorage.chats = payload;
-      state.chats = JSON.parse(payload);
-    },
+    setLoading: (state, { payload }) => { state.loading = payload },
     setCurrentChat: (state, { payload }) => { state.currentChat = payload },
+    setFullContent: (state, { payload }) => {
+      state.fullContent = JSON.parse(payload);
+      state.visibleContent = [];
+    },
+    setVisibleContent: (state, { payload }) => { state.visibleContent = payload },
   },
 });
 
-export const { doChangeTheme, setChat, setCurrentChat } = configs.actions;
+export const { doChangeTheme, setLoading, setCurrentChat, setFullContent, setVisibleContent } = configs.actions;
 
 export default configs.reducer;

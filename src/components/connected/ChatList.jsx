@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
@@ -9,28 +9,29 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { getLastMessage } from '../../services/chat';
+import { getLastMessage } from '../../utils/functions';
 import { setCurrentChat } from '../../redux/reducers/configs';
 
 function ChatList({ handleClose }) {
   const dispatch = useDispatch();
-  const { chats, currentChat } = useSelector(state => state.configs);
+  const { currentChat, visibleContent } = useSelector(state => state.configs);
 
-  const handleChat = useCallback(protocolo => {
+  const handleChat = useCallback(chat => {
     handleClose();
-    dispatch(setCurrentChat(protocolo));
+    dispatch(setCurrentChat(chat));
   }, [dispatch, handleClose]);
 
   return (
     <List>
-      {chats.map(chat => (
+      {visibleContent.map((chat, index) => (
         <ListItem
-          key={chat.protocolo}
-          className={chat.protocolo === currentChat ? 'active' : ''}
+          key={`${chat.protocolo}-${index}`}
+          className={chat.protocolo === currentChat?.protocolo ? 'active' : ''}
           disablePadding
           sx={{
             borderRadius: 2,
             mx: 1,
+            overflow: 'hidden',
             transitionDuration: '250ms',
             width: 'calc(100% - 16px)',
             '&.active': {
@@ -39,9 +40,9 @@ function ChatList({ handleClose }) {
             },
           }}
         >
-          <ListItemButton onClick={() => handleChat(chat.protocolo)}>
+          <ListItemButton onClick={() => handleChat(chat)}>
             <Typography
-              color={chat.protocolo === currentChat ? 'inherit' : 'text.secondary'}
+              color={chat.protocolo === currentChat?.protocolo ? 'inherit' : 'text.secondary'}
               variant="caption"
               position="absolute"
               right={24}
@@ -60,7 +61,7 @@ function ChatList({ handleClose }) {
               primary={chat.contact.name}
               secondary={getLastMessage(chat).text}
               secondaryTypographyProps={{
-                color: chat.protocolo === currentChat ? 'inherit' : 'text.secondary',
+                color: chat.protocolo === currentChat?.protocolo ? 'inherit' : 'text.secondary',
                 noWrap: true,
               }}
             />
