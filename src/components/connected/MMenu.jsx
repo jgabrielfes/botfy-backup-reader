@@ -39,6 +39,7 @@ function MMenu({ open, handleClose }) {
       handleClose();
       reader.readAsText(file);
     } else {
+      dispatch(setLoading(false));
       enqueueSnackbar('Formato não suportado', { variant: 'error' })
     }
   }, [enqueueSnackbar, dispatch, handleClose])
